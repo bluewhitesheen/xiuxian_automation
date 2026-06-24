@@ -1,0 +1,55 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+.pip-wheel-metadata/
+Pipfile.lock
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Unit test / lint / type checker caches
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Local IDE and editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.agents
+
+# Environment / config
+.env
+.env.*
+*.local
+
+# Runtime logs
+logs/*
+*.log
+
+# OS / editor generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Misc build or temp files
+*.tmp
