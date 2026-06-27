@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -9,6 +8,7 @@ from tempfile import NamedTemporaryFile
 
 from PIL import Image
 
+from bluestacks_automation.adb_utils import run_adb
 from bluestacks_automation.grid_geometry import (
 	GRID_COLS,
 	GRID_HEIGHT_PX,
@@ -32,39 +32,18 @@ DEFAULT_ROWS = GRID_ROWS
 DEFAULT_COLS = GRID_COLS
 
 
-def run_adb(args: list[str], serial: str, timeout_seconds: int) -> subprocess.CompletedProcess[str]:
-	adb_path = shutil.which("adb")
-	if adb_path is None:
-		raise RuntimeError("找不到 adb 指令，請先安裝 platform-tools 並加入 PATH")
-
-	try:
-		return subprocess.run(
-			[adb_path, "-s", serial, *args],
-			check=True,
-			capture_output=True,
-			text=True,
-			timeout=timeout_seconds,
-		)
-	except subprocess.TimeoutExpired as exc:
-		raise RuntimeError(f"adb 指令超時（{timeout_seconds}s）: {' '.join(args)}") from exc
-
-
 def capture_screenshot(serial: str, timeout_seconds: int) -> Image.Image:
-	adb_path = shutil.which("adb")
-	if adb_path is None:
-		raise RuntimeError("找不到 adb 指令，請先安裝 platform-tools 並加入 PATH")
-
 	with NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
 		temp_path = Path(temp_file.name)
 
 	try:
 		with temp_path.open("wb") as output_file:
-			subprocess.run(
-				[adb_path, "-s", serial, "exec-out", "screencap", "-p"],
-				check=True,
+			run_adb(
+				serial,
+				["exec-out", "screencap", "-p"],
+				timeout_seconds=timeout_seconds,
 				stdout=output_file,
 				stderr=subprocess.PIPE,
-				timeout=timeout_seconds,
 			)
 
 		with Image.open(temp_path) as image:
@@ -87,7 +66,7 @@ def crop_grid_region(
 	bottom = min(image.height, top + grid_height)
 
 	if left >= right or top >= bottom:
-		raise RuntimeError("裁切範圍無效，請檢查 grid_x/grid_y/grid_width/grid_height")
+		raise RuntimeError("Invalid grid_x/grid_y/grid_width/grid_height")
 
 	return image.crop((left, top, right, bottom))
 
@@ -125,23 +104,23 @@ def save_tiles(tiles: list[list[Image.Image]], output_dir: Path) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-	parser = argparse.ArgumentParser(description="ADB 截圖、裁切並切成格子後存到 res 底下")
-	parser.add_argument("--serial", default=ADB_SERIAL, help="ADB 裝置序號，預設 emulator-5554")
-	parser.add_argument("--out", default=None, help="輸出資料夾前綴，預設為時間戳")
-	parser.add_argument("--grid-x", type=int, default=DEFAULT_GRID_X, help="裁切區左上角 X")
-	parser.add_argument("--grid-y", type=int, default=DEFAULT_GRID_Y, help="裁切區左上角 Y")
-	parser.add_argument("--grid-width", type=int, default=DEFAULT_GRID_WIDTH, help="裁切區寬度")
-	parser.add_argument("--grid-height", type=int, default=DEFAULT_GRID_HEIGHT, help="裁切區高度")
-	parser.add_argument("--rows", type=int, default=DEFAULT_ROWS, help="網格列數")
-	parser.add_argument("--cols", type=int, default=DEFAULT_COLS, help="網格欄數")
-	parser.add_argument("--save-full", action="store_true", help="是否同時儲存完整裁切圖")
-	parser.add_argument("--timeout", type=int, default=ADB_TIMEOUT_SECONDS, help="adb 指令逾時秒數")
+	parser = argparse.ArgumentParser(description="ADB capture and split a screenshot by grid.")
+	parser.add_argument("--serial", default=ADB_SERIAL, help="ADB serial, e.g. emulator-5554")
+	parser.add_argument("--out", default=None, help="Output directory name under res/")
+	parser.add_argument("--grid-x", type=int, default=DEFAULT_GRID_X, help="Grid crop left")
+	parser.add_argument("--grid-y", type=int, default=DEFAULT_GRID_Y, help="Grid crop top")
+	parser.add_argument("--grid-width", type=int, default=DEFAULT_GRID_WIDTH, help="Grid crop width")
+	parser.add_argument("--grid-height", type=int, default=DEFAULT_GRID_HEIGHT, help="Grid crop height")
+	parser.add_argument("--rows", type=int, default=DEFAULT_ROWS, help="Number of rows")
+	parser.add_argument("--cols", type=int, default=DEFAULT_COLS, help="Number of columns")
+	parser.add_argument("--save-full", action="store_true", help="Save full cropped grid image")
+	parser.add_argument("--timeout", type=int, default=ADB_TIMEOUT_SECONDS, help="adb timeout seconds")
 	return parser.parse_args()
 
 
 def main() -> None:
 	args = parse_args()
-	run_adb(["get-state"], args.serial, args.timeout)
+	run_adb(args.serial, ["get-state"], timeout_seconds=args.timeout, capture_output=True, text=True)
 	image = capture_screenshot(args.serial, args.timeout)
 	cropped = crop_grid_region(image, args.grid_x, args.grid_y, args.grid_width, args.grid_height)
 	tiles = split_image(cropped, args.rows, args.cols)
@@ -154,9 +133,8 @@ def main() -> None:
 		cropped.save(output_dir / "grid.png")
 
 	save_tiles(tiles, output_dir / "tiles")
-	print(f"儲存路徑: {output_dir}")
+	print(f"output: {output_dir}")
 
 
 if __name__ == "__main__":
 	main()
-

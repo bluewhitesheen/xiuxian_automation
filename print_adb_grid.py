@@ -34,7 +34,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def validate_adb(serial: str, timeout_seconds: int) -> None:
-	run_adb(["get-state"], serial, timeout_seconds)
+	run_adb(serial, ["get-state"], timeout_seconds=timeout_seconds, capture_output=True, text=True)
 
 
 def capture_grid(serial: str, timeout_seconds: int, grid_x: int, grid_y: int, grid_width: int, grid_height: int, rows: int, cols: int) -> list[list[str]]:
@@ -66,4 +66,3 @@ def main() -> None:
 
 if __name__ == "__main__":
 	main()
-

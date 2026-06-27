@@ -41,6 +41,7 @@ ENV/
 .env
 .env.*
 *.local
+bluestack.conf
 
 # Runtime logs
 logs/*
@@ -53,3 +54,4 @@ Desktop.ini
 
 # Misc build or temp files
 *.tmp
+res/tiles/*
