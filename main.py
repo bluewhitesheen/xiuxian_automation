@@ -103,9 +103,9 @@ def main() -> None:
 			print(f"patch {patch + 1}/{patch_count} started")
 			for iteration in range(iter_count):
 				print(f"iter {iteration + 1}/{iter_count} clear loop started")
-				tap_pixel(360, 1600, ADB_SERIAL)
+				tap_pixel(ADB_SERIAL, 360, 1600)
 				time.sleep(0.3)
-				tap_pixel(1120, 3450, ADB_SERIAL)
+				tap_pixel(ADB_SERIAL, 1120, 3450)
 				time.sleep(1)
 
 				while True:
@@ -113,9 +113,9 @@ def main() -> None:
 
 					verify_grid = verify_current_grid(capture_device_screenshot)
 					if is_verified_clear_grid(verify_grid):
-						tap_pixel(120, 120, ADB_SERIAL)
+						tap_pixel(ADB_SERIAL, 120, 120)
 						time.sleep(0.5)
-						tap_pixel(1400, 2880, ADB_SERIAL)
+						tap_pixel(ADB_SERIAL, 1400, 2880)
 						time.sleep(0.5)
 						break
 

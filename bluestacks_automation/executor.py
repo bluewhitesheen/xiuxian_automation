@@ -66,7 +66,7 @@ def execute_list(
 	return current
 
 
-def tap_pixel(x: int, y: int, adb_serial: str | None = None) -> None:
+def tap_pixel(adb_serial: str, x: int, y: int) -> None:
 	"""Tap absolute pixel coordinate on device."""
 	_adb_tap(x, y, adb_serial)
 

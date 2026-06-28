@@ -5,6 +5,7 @@ import time
 from typing import Final
 
 from bluestacks_automation.adb_utils import run_adb
+from bluestacks_automation.executor import tap_pixel
 
 
 APP_PACKAGE: Final[str] = "com.dustglobal.googleplay.xiuxian"
@@ -26,22 +27,13 @@ def restart_game(adb_serial: str) -> None:
 		text=True,
 	)
 	time.sleep(7)
-	run_adb(
-		adb_serial,
-		["shell", "input", "tap", "1080", "4480"],
-	)
+	tap_pixel(adb_serial, 1080, 4480)
 	time.sleep(15)
-	run_adb(
-		adb_serial,
-		["shell", "input", "tap", "1080", "4140"],
-	)
+	tap_pixel(adb_serial, 1080, 4140)
 	time.sleep(1)
 
 def click_travel(adb_serial: str) -> None:
-	run_adb(
-		adb_serial,
-		["shell", "input", "tap", "1800", "5000"],
-	)
+	tap_pixel(adb_serial, 1800, 5000)
 	time.sleep(1)
 
 def move_to_right_buttom(adb_serial: str) -> None:
@@ -51,4 +43,3 @@ def move_to_right_buttom(adb_serial: str) -> None:
 			["shell", "input", "swipe", "1500", "1500", "0", "0", "100"],
 		)
 	time.sleep(0.5)
-

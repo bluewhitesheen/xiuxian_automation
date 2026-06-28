@@ -55,7 +55,7 @@ def capture_grid(capture_device_screenshot: ScreenshotFunc) -> Grid:
 
 def tap_initial_player_position(adb_serial: str | None = None) -> None:
 	start_x, start_y = grid_point_to_pixel(12, 3)
-	tap_pixel(start_x, start_y, adb_serial)
+	tap_pixel(adb_serial, start_x, start_y)
 	time.sleep(0.7)
 
 
@@ -114,4 +114,3 @@ def verify_current_grid(capture_device_screenshot: ScreenshotFunc) -> Grid:
 	time.sleep(0.7)
 	verify_grid = capture_grid(capture_device_screenshot)
 	return verify_grid
-
