@@ -8,15 +8,13 @@ from bluestacks_automation.adb_utils import run_adb
 
 
 APP_PACKAGE: Final[str] = "com.dustglobal.googleplay.xiuxian"
-ADB_TIMEOUT_SECONDS: Final[int] = 10
 
 
-def restart_game(adb_serial: str, timeout_seconds: int = ADB_TIMEOUT_SECONDS) -> None:
+def restart_game(adb_serial: str) -> None:
 	"""Restart the target app by force-stopping it and relaunching from launcher."""
 	run_adb(
 		adb_serial,
 		["shell", "am", "force-stop", APP_PACKAGE],
-		timeout_seconds=timeout_seconds,
 		capture_output=True,
 		text=True,
 	)
@@ -24,7 +22,6 @@ def restart_game(adb_serial: str, timeout_seconds: int = ADB_TIMEOUT_SECONDS) ->
 	run_adb(
 		adb_serial,
 		["shell", "monkey", "-p", APP_PACKAGE, "-c", "android.intent.category.LAUNCHER", "1"],
-		timeout_seconds=timeout_seconds,
 		capture_output=True,
 		text=True,
 	)
@@ -32,13 +29,11 @@ def restart_game(adb_serial: str, timeout_seconds: int = ADB_TIMEOUT_SECONDS) ->
 	run_adb(
 		adb_serial,
 		["shell", "input", "tap", "1080", "4480"],
-		timeout_seconds=timeout_seconds,
 	)
 	time.sleep(15)
 	run_adb(
 		adb_serial,
 		["shell", "input", "tap", "1080", "4140"],
-		timeout_seconds=timeout_seconds,
 	)
 	time.sleep(1)
 
@@ -48,4 +43,12 @@ def click_travel(adb_serial: str) -> None:
 		["shell", "input", "tap", "1800", "5000"],
 	)
 	time.sleep(1)
+
+def move_to_right_buttom(adb_serial: str) -> None:
+	for _ in range(5):
+		run_adb(
+			adb_serial,
+			["shell", "input", "swipe", "1500", "1500", "0", "0", "100"],
+		)
+	time.sleep(0.5)
 
