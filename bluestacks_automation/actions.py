@@ -40,3 +40,12 @@ def restart_game(adb_serial: str, timeout_seconds: int = ADB_TIMEOUT_SECONDS) ->
 		["shell", "input", "tap", "1080", "4140"],
 		timeout_seconds=timeout_seconds,
 	)
+	time.sleep(1)
+
+def click_travel(adb_serial: str) -> None:
+	run_adb(
+		adb_serial,
+		["shell", "input", "tap", "1800", "5000"],
+	)
+	time.sleep(1)
+

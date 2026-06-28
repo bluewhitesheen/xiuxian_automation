@@ -10,7 +10,7 @@ from typing import Final
 from PIL import Image
 
 from bluestacks_automation.executor import tap_pixel
-from bluestacks_automation.actions import restart_game
+from bluestacks_automation.actions import restart_game, click_travel
 from bluestacks_automation.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
 from bluestacks_automation.iteration import is_verified_clear_grid, run_map_once, verify_current_grid
 from bluestacks_automation.logging_utils import tee_console_to_log
@@ -115,6 +115,7 @@ def main() -> None:
 				_ = verify_grid
 
 		restart_game(ADB_SERIAL)
+		click_travel(ADB_SERIAL)
 
 
 if __name__ == "__main__":
