@@ -70,7 +70,7 @@ def validate_adb_connection() -> None:
 		raise RuntimeError(f"ADB device is not ready (state={device_state!r})")
 
 
-def load_runtime_config(config_path: Path = CONFIG_PATH) -> tuple[int, int]:
+def load_runtime_config(config_path: Path = CONFIG_PATH) -> tuple[int, int, int, int]:
 	if not config_path.exists():
 		raise RuntimeError(f"Config file not found: {config_path}")
 
@@ -80,19 +80,42 @@ def load_runtime_config(config_path: Path = CONFIG_PATH) -> tuple[int, int]:
 		raise RuntimeError(f"Missing 'iter_count' in section [automation] in {config_path}")
 	if not parser.has_option("automation", "patch_count"):
 		raise RuntimeError(f"Missing 'patch_count' in section [automation] in {config_path}")
+	if not parser.has_option("automation", "stage"):
+		raise RuntimeError(f"Missing 'stage' in section [automation] in {config_path}")
+	if not parser.has_section("level_positions"):
+		raise RuntimeError(f"Missing section [level_positions] in {config_path}")
 
 	try:
 		iter_count = parser.getint("automation", "iter_count")
 		patch_count = parser.getint("automation", "patch_count")
+		stage = parser.getint("automation", "stage")
 	except ValueError as exc:
 		raise RuntimeError(f"Invalid config value in {config_path}") from exc
 
-	return patch_count, iter_count
+	if not parser.has_option("level_positions", str(stage)):
+		raise RuntimeError(f"Missing coordinate for stage '{stage}' in [level_positions] in {config_path}")
+
+	raw_position = parser.get("level_positions", str(stage), fallback="").strip()
+	parts = [p.strip() for p in raw_position.split(",", 1)]
+	if len(parts) != 2:
+		raise RuntimeError(
+			f"Invalid coordinate format for stage '{stage}' in [level_positions], expected 'x,y' in {config_path}"
+		)
+
+	try:
+		stage_x = int(parts[0])
+		stage_y = int(parts[1])
+	except ValueError as exc:
+		raise RuntimeError(
+			f"Invalid coordinate values for stage '{stage}' in [level_positions], expected integers in {config_path}"
+		) from exc
+
+	return patch_count, iter_count, stage_x, stage_y
 
 
 def main() -> None:
 	validate_adb_connection()
-	patch_count, iter_count = load_runtime_config()
+	patch_count, iter_count, stage_x, stage_y = load_runtime_config()
 
 	current_time = _dt.datetime.now().strftime("%Y%m%d_%H%M%S")
 	with tee_console_to_log(LOG_DIR, f"run_{current_time}.txt") as log_path:
@@ -103,7 +126,7 @@ def main() -> None:
 			print(f"patch {patch + 1}/{patch_count} started")
 			for iteration in range(iter_count):
 				print(f"iter {iteration + 1}/{iter_count} clear loop started")
-				tap_pixel(ADB_SERIAL, 360, 1600)
+				tap_pixel(ADB_SERIAL, stage_x, stage_y)
 				time.sleep(0.3)
 				tap_pixel(ADB_SERIAL, 1120, 3450)
 				time.sleep(1)

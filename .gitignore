@@ -54,4 +54,4 @@ Desktop.ini
 
 # Misc build or temp files
 *.tmp
-res/tiles/*
+res/*

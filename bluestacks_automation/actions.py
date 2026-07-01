@@ -19,7 +19,7 @@ def restart_game(adb_serial: str) -> None:
 		capture_output=True,
 		text=True,
 	)
-	time.sleep(1)
+	time.sleep(5)
 	run_adb(
 		adb_serial,
 		["shell", "monkey", "-p", APP_PACKAGE, "-c", "android.intent.category.LAUNCHER", "1"],
