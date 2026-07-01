@@ -1,4 +1,4 @@
-# 三仙修仙誌刷圖腳本
+﻿# 三仙修仙誌刷圖腳本
 
 ## Enviornment and configuration
 * BlueStacks 5 + ADB 

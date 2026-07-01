@@ -74,9 +74,9 @@ def tap_pixel(adb_serial: str, x: int, y: int) -> None:
 def interact_with_monster(monster_point: GridPoint, adb_serial: str | None = None) -> None:
 	"""
 	Perform the defined monster interaction sequence:
-	1) tap monster cell
-	2) wait 0.5s and tap (1200, 3000)
-	3) wait 5.0s and tap (1000, 5000)
+	0.5) tap monster cell
+	1) wait 0.5s and tap (600, 1500)
+	1.5) wait 2.5.0s and tap (500, 2500)
 	"""
 	# tap monster cell
 	x, y = _grid_to_pixel(monster_point)

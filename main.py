@@ -22,10 +22,10 @@ LOG_DIR = WORKSPACE_DIR / "logs"
 ADB_SERIAL: Final[str] = "emulator-5554"
 
 # Crop the device screenshot down to the 2D grid region.
-GRID_X = 240
-GRID_Y = 1280
-GRID_WIDTH = 1680
-GRID_HEIGHT = 3120
+GRID_X = 120
+GRID_Y = 640
+GRID_WIDTH = 840
+GRID_HEIGHT = 1560
 
 
 def crop_grid_region(image: Image.Image) -> Image.Image:
@@ -127,19 +127,19 @@ def main() -> None:
 			for iteration in range(iter_count):
 				print(f"iter {iteration + 1}/{iter_count} clear loop started")
 				tap_pixel(ADB_SERIAL, stage_x, stage_y)
-				time.sleep(0.3)
-				tap_pixel(ADB_SERIAL, 1120, 3450)
-				time.sleep(1)
+				time.sleep(0.15)
+				tap_pixel(ADB_SERIAL, 560, 1725)
+				time.sleep(0.5)
 
 				while True:
 					_, _ = run_map_once(capture_device_screenshot, ADB_SERIAL)
 
 					verify_grid = verify_current_grid(capture_device_screenshot)
 					if is_verified_clear_grid(verify_grid):
-						tap_pixel(ADB_SERIAL, 120, 120)
-						time.sleep(0.5)
-						tap_pixel(ADB_SERIAL, 1400, 2880)
-						time.sleep(0.5)
+						tap_pixel(ADB_SERIAL, 60, 60)
+						time.sleep(0.25)
+						tap_pixel(ADB_SERIAL, 700, 1440)
+						time.sleep(0.25)
 						break
 
 					_ = verify_grid

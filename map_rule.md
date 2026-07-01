@@ -1,4 +1,4 @@
-# 地圖規則
+﻿# 地圖規則
 
 ## 概述
 這張地圖是一個 13 行 × 7 列的 2D grid。每個格子可能是以下四種之一：
@@ -63,3 +63,25 @@ cell_center_y = grid_top + row * 240 + 120
 - `grid_left` / `grid_top` 是用 adb 實測出來的 grid 起始邊界。
 
 如果 BlueStacks 視窗大小、解析度、DPI、遊戲畫面位置有變，應該重新校準 `grid_left` / `grid_top`，但通常不需要改 `+120`，除非單格大小不再是 `240x240`。
+
+## 檔案讀寫環境設定（避免亂碼）
+
+這份專案在 Windows PowerShell 下維護時，請固定使用 UTF-8 編碼進行檔案 I/O。
+
+### 讀檔
+
+- 使用：`Get-Content -Raw -Encoding UTF8 <path>`
+- 建議：避免使用預設 encoding 版本依賴行為。
+- 適用檔案：`README.md`、`map_rule.md`、程式碼檔。
+
+### 寫檔
+
+- 使用：`Set-Content -Path <path> -Encoding utf8 -Value <content>`
+- 避免：使用會被 OS 預設改成 Unicode 的寫入方式。
+- 建議：必要時補 `-NoNewline` 保持原始換行一致性。
+
+### 目前環境
+
+- 專案根目錄：`C:\Users\terry\Desktop\bluestack-automation`
+- 權限模式：workspace-write，限制寫在工作目錄下。
+- 取得 remote 檔案版本：使用 `git show origin/main:<file>` 再 `Set-Content` 寫回，以避免 `.git/index.lock` 相關問題。

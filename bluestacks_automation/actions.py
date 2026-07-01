@@ -27,19 +27,19 @@ def restart_game(adb_serial: str) -> None:
 		text=True,
 	)
 	time.sleep(7)
-	tap_pixel(adb_serial, 1080, 4480)
+	tap_pixel(adb_serial, 540, 2240)
 	time.sleep(15)
-	tap_pixel(adb_serial, 1080, 4140)
+	tap_pixel(adb_serial, 540, 2070)
 	time.sleep(1)
 
 def click_travel(adb_serial: str) -> None:
-	tap_pixel(adb_serial, 1800, 5000)
+	tap_pixel(adb_serial, 900, 2500)
 	time.sleep(1)
 
 def move_to_right_buttom(adb_serial: str) -> None:
 	for _ in range(5):
 		run_adb(
 			adb_serial,
-			["shell", "input", "swipe", "1500", "1500", "0", "0", "100"],
+			["shell", "input", "swipe", "1000", "1000", "0", "0", "100"],
 		)
 	time.sleep(0.5)

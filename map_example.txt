@@ -1,4 +1,4 @@
-iteration 4/30
+iteration 2/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -13,7 +13,7 @@ M.....M
 .....MM
 IM.P..I
 
-iteration 5/30
+iteration 2.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -28,7 +28,7 @@ M......
 ....M.M
 IM.P..I
 
-iteration 6/30
+iteration 3/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -43,7 +43,7 @@ M.M..M.
 ......M
 IM.P..I
 
-iteration 7/30
+iteration 3.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -58,7 +58,7 @@ M....M.
 ....MM.
 IM.P..I
 
-iteration 8/30
+iteration 4/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -73,7 +73,7 @@ M....MM
 ......M
 IM.P..I
 
-iteration 9/30
+iteration 4.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -88,7 +88,7 @@ M......
 ......M
 IM.P..I
 
-iteration 10/30
+iteration 5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -103,7 +103,7 @@ M......
 ....MM.
 IM.P..I
 
-iteration 11/30
+iteration 5.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -118,7 +118,7 @@ M......
 .....M.
 IM.P..I
 
-iteration 12/30
+iteration 6/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -133,7 +133,7 @@ M....M.
 ......M
 IM.P..I
 
-iteration 13/30
+iteration 6.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -148,7 +148,7 @@ M...M.M
 .....M.
 IM.P..I
 
-iteration 14/30
+iteration 7/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -163,7 +163,7 @@ M......
 .......
 IM.P..I
 
-iteration 15/30
+iteration 7.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -178,7 +178,7 @@ M.....M
 .......
 IM.P..I
 
-iteration 16/30
+iteration 8/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -193,7 +193,7 @@ M......
 ....M..
 IM.P..I
 
-iteration 17/30
+iteration 8.5/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -208,7 +208,7 @@ M...M..
 .......
 IM.P..I
 
-iteration 18/30
+iteration 9/15
 .M.M.M.
 MIM.MIM
 .M...M.
@@ -223,7 +223,7 @@ M....M.
 .......
 IM.P..I
 
-iteration 19/30
+iteration 9.5/15
 .M.M.M.
 MIM.MIM
 .M...M.

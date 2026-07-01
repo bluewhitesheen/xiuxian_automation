@@ -14,7 +14,7 @@ from bluestacks_automation.grid_geometry import GRID_ROWS, GRID_COLS
 
 WORKSPACE_DIR = Path(__file__).resolve().parent.parent
 RES_DIR = WORKSPACE_DIR / "res"
-REFERENCE_CROP_SIZE = 176
+REFERENCE_CROP_SIZE = 88
 SIMILARITY_THRESHOLD = 0.8
 
 

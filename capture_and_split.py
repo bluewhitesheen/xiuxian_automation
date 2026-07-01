@@ -21,7 +21,7 @@ from bluestacks_automation.grid_geometry import (
 WORKSPACE_DIR = Path(__file__).resolve().parent
 RES_DIR = WORKSPACE_DIR / "res"
 ADB_SERIAL = "emulator-5554"
-ADB_TIMEOUT_SECONDS = 20
+ADB_TIMEOUT_SECONDS = 10
 
 # Default crop matches the 13x7 grid used by the current classifier.
 DEFAULT_GRID_X = GRID_LEFT_PX
@@ -126,13 +126,13 @@ def main() -> None:
 	tiles = split_image(cropped, args.rows, args.cols)
 
 	output_name = args.out or datetime.now().strftime("capture_%Y%m%d_%H%M%S")
-	output_dir = RES_DIR / output_name
+	output_dir = RES_DIR
 	output_dir.mkdir(parents=True, exist_ok=True)
 
 	if args.save_full:
 		cropped.save(output_dir / "grid.png")
 
-	save_tiles(tiles, output_dir / "tiles")
+	save_tiles(tiles, output_dir)
 	print(f"output: {output_dir}")
 
 
