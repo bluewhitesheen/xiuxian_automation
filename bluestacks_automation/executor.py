@@ -56,7 +56,7 @@ def execute_list(
 	for point in click_list:
 		# compute distance in grid steps (Manhattan)
 		dist = abs(point[0] - current[0]) + abs(point[1] - current[1])
-		wait_seconds = dist * 0.53
+		wait_seconds = dist * 0.47
 		x, y = _grid_to_pixel(point)
 		_adb_tap(x, y, adb_serial)
 		# wait for movement to finish before next tap
@@ -72,12 +72,6 @@ def tap_pixel(adb_serial: str, x: int, y: int) -> None:
 
 
 def interact_with_monster(monster_point: GridPoint, adb_serial: str | None = None) -> None:
-	"""
-	Perform the defined monster interaction sequence:
-	0.5) tap monster cell
-	1) wait 0.5s and tap (600, 1500)
-	1.5) wait 2.5.0s and tap (500, 2500)
-	"""
 	# tap monster cell
 	x, y = _grid_to_pixel(monster_point)
 	_adb_tap(x, y, adb_serial)

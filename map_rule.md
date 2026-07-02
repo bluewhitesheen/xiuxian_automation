@@ -47,22 +47,22 @@ MIM.MIM
 
 BlueStacks 畫面上的 grid 邊界座標是用 adb command 手動 click 測出來的，不是從遊戲 API 取得。
 
-目前校準時使用的畫面解析度是 `5120x2160`。
+目前校準時使用的畫面解析度是 `1280x540`。
 
-目前每一格是 `240x240` pixel，所以從格子的左上角換算成可點擊位置時，會加上 `+120, +120`，讓 adb tap 落在該格正中央：
+目前每一格是 `60x60` pixel，所以從格子的左上角換算成可點擊位置時，會加上 `+30, +30`，讓 adb tap 落在該格正中央：
 
 ```text
-cell_center_x = grid_left + col * 240 + 120
-cell_center_y = grid_top + row * 240 + 120
+cell_center_x = grid_left + col * 60 + 30
+cell_center_y = grid_top + row * 60 + 30
 ```
 
 因此：
 
-- `240` 是單格寬高。
-- `120` 是半格偏移，用來點擊格子中心。
+- `60` 是單格寬高。
+- `30` 是半格偏移，用來點擊格子中心。
 - `grid_left` / `grid_top` 是用 adb 實測出來的 grid 起始邊界。
 
-如果 BlueStacks 視窗大小、解析度、DPI、遊戲畫面位置有變，應該重新校準 `grid_left` / `grid_top`，但通常不需要改 `+120`，除非單格大小不再是 `240x240`。
+如果 BlueStacks 視窗大小、解析度、DPI、遊戲畫面位置有變，應該重新校準 `grid_left` / `grid_top`，但通常不需要改 `+30`，除非單格大小不再是 `60x60`。
 
 ## 檔案讀寫環境設定（避免亂碼）
 
