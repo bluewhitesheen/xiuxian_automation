@@ -48,8 +48,8 @@ def print_grid(grid: Grid) -> None:
 		print("".join(row))
 
 
-def capture_grid(capture_device_screenshot: ScreenshotFunc) -> Grid:
-	image = capture_device_screenshot()
+def capture_grid(capture_screenshot: ScreenshotFunc) -> Grid:
+	image = capture_screenshot()
 	return analyze_screenshot_grid(image)
 
 
@@ -60,7 +60,7 @@ def tap_initial_player_position(adb_serial: str | None = None) -> None:
 
 
 def run_map_once(
-	capture_device_screenshot: ScreenshotFunc,
+	capture_screenshot: ScreenshotFunc,
 	adb_serial: str | None = None,
 	grid: Grid | None = None,
 	current_pos: GridPoint | None = None,
@@ -71,7 +71,7 @@ def run_map_once(
 		tap_initial_player_position(adb_serial)
 
 	if grid is None:
-		grid = capture_grid(capture_device_screenshot)
+		grid = capture_grid(capture_screenshot)
 
 	if current_pos is None:
 		try:
@@ -110,7 +110,7 @@ def run_map_once(
 	return grid, current_pos
 
 
-def verify_current_grid(capture_device_screenshot: ScreenshotFunc) -> Grid:
+def verify_current_grid(capture_screenshot: ScreenshotFunc) -> Grid:
 	time.sleep(0.7)
-	verify_grid = capture_grid(capture_device_screenshot)
+	verify_grid = capture_grid(capture_screenshot)
 	return verify_grid

@@ -44,6 +44,10 @@ def _build_event_points(grid: Grid) -> dict[Point, Point]:
 		if row == 0:
 			continue
 		for col in range(cols):
+			if grid[12][0] == '.' and col == 0: 
+				continue
+			if grid[5][6] == '.' and grid[12][6] == '.' and col == 6:
+				continue
 			cell = grid[row][col]
 			if cell == "I":
 				event_points[(row, col)] = (row, col)

@@ -5,11 +5,18 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 from tempfile import NamedTemporaryFile
+import sys
 
 from PIL import Image
 
-from bluestacks_automation.adb_utils import run_adb
-from bluestacks_automation.grid_geometry import (
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+	sys.path.insert(0, str(PROJECT_ROOT))
+
+from map_module._bootstrap import ensure_repo_root_on_path
+ensure_repo_root_on_path()
+from core.adb_utils import run_adb
+from map_automation.grid_geometry import (
 	GRID_COLS,
 	GRID_HEIGHT_PX,
 	GRID_LEFT_PX,
@@ -19,7 +26,7 @@ from bluestacks_automation.grid_geometry import (
 )
 
 WORKSPACE_DIR = Path(__file__).resolve().parent
-RES_DIR = WORKSPACE_DIR / "res"
+RES_DIR = WORKSPACE_DIR.parent / "res"
 ADB_SERIAL = "emulator-5554"
 ADB_TIMEOUT_SECONDS = 10
 

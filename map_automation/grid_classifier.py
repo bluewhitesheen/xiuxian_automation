@@ -9,7 +9,7 @@ from pprint import pformat
 
 from PIL import Image
 
-from bluestacks_automation.grid_geometry import GRID_ROWS, GRID_COLS
+from map_automation.grid_geometry import GRID_ROWS, GRID_COLS
 
 
 WORKSPACE_DIR = Path(__file__).resolve().parent.parent
@@ -103,7 +103,7 @@ def _load_category(category_name: str, marker: str) -> ReferenceCategory:
 def load_reference_categories() -> tuple[ReferenceCategory, ...]:
 	return (
 		_load_category("monster", "M"),
-		_load_category("item", "I"),
+		_load_category("treasure", "I"),
 		_load_category("people", "P"),
 	)
 
@@ -139,4 +139,3 @@ def analyze_screenshot_grid(image: Image.Image, rows: int = GRID_ROWS, cols: int
 
 def format_grid(grid: list[list[str]]) -> str:
 	return pformat(grid, width=120)
-

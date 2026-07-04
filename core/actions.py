@@ -1,14 +1,43 @@
 """Action helpers for BlueStacks automation."""
 from __future__ import annotations
 
+from io import BytesIO
 import time
 from typing import Final
+from PIL import Image
 
-from bluestacks_automation.adb_utils import run_adb
-from bluestacks_automation.executor import tap_pixel
+from core.adb_utils import run_adb
 
 
 APP_PACKAGE: Final[str] = "com.dustglobal.googleplay.xiuxian"
+
+
+def tap_pixel(adb_serial: str, x: int, y: int) -> None:
+	"""Tap absolute pixel coordinate on device."""
+	run_adb(
+		adb_serial,
+		["shell", "input", "tap", str(x), str(y)],
+	)
+
+
+def read_pixel_rgb(adb_serial: str, x: int, y: int) -> tuple[int, int, int]:
+	"""Capture device screenshot and return the RGB tuple at (x, y)."""
+	screenshot = run_adb(
+		adb_serial,
+		["exec-out", "screencap", "-p"],
+		capture_output=True,
+	)
+
+	raw = screenshot.stdout
+	if not isinstance(raw, (bytes, bytearray)):
+		raw = str(raw).encode()
+
+	with Image.open(BytesIO(raw)) as image:
+		image_rgb = image.convert("RGB")
+		width, height = image_rgb.size
+		if not (0 <= x < width and 0 <= y < height):
+			raise ValueError(f"Pixel coordinate ({x}, {y}) out of bounds for screenshot {width}x{height}")
+		return image_rgb.getpixel((x, y))
 
 
 def restart_game(adb_serial: str) -> None:

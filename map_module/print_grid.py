@@ -1,9 +1,17 @@
 from __future__ import annotations
 
 import argparse
-from typing import Final
+from pathlib import Path
+import sys
 
-from capture_and_split import (
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+	sys.path.insert(0, str(PROJECT_ROOT))
+
+from map_module._bootstrap import ensure_repo_root_on_path
+
+ensure_repo_root_on_path()
+from map_module.capture_and_split import (
 	DEFAULT_GRID_HEIGHT,
 	DEFAULT_GRID_WIDTH,
 	DEFAULT_GRID_X,
@@ -14,11 +22,11 @@ from capture_and_split import (
 	crop_grid_region,
 	run_adb,
 )
-from bluestacks_automation.grid_classifier import GRID_COLS, GRID_ROWS, analyze_screenshot_grid
+from map_automation.grid_classifier import GRID_COLS, GRID_ROWS, analyze_screenshot_grid
 
 
-DEFAULT_SERIAL: Final[str] = ADB_SERIAL
-DEFAULT_TIMEOUT_SECONDS: Final[int] = ADB_TIMEOUT_SECONDS
+DEFAULT_SERIAL: str = ADB_SERIAL
+DEFAULT_TIMEOUT_SECONDS: int = ADB_TIMEOUT_SECONDS
 
 
 def parse_args() -> argparse.Namespace:
@@ -66,3 +74,4 @@ def main() -> None:
 
 if __name__ == "__main__":
 	main()
+

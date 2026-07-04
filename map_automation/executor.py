@@ -3,14 +3,17 @@ from __future__ import annotations
 import time
 from typing import List
 
-from bluestacks_automation.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
-from bluestacks_automation.grid_geometry import (
+from core.actions import read_pixel_rgb
+from core.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
+from map_automation.grid_geometry import (
 	GRID_CELL_CENTER_OFFSET_X,
 	GRID_CELL_CENTER_OFFSET_Y,
 	GRID_CELL_PX_X,
 	GRID_CELL_PX_Y,
 	GRID_LEFT_PX,
 	GRID_TOP_PX,
+	MONSTER_DONE_PX,
+	MONSTER_DONE_RGB,
 	UI_MONSTER_TAP_1_PX,
 	UI_MONSTER_TAP_2_PX,
 )
@@ -78,7 +81,10 @@ def interact_with_monster(monster_point: GridPoint, adb_serial: str | None = Non
 	time.sleep(0.5)
 	monster_tap_x, monster_tap_y = UI_MONSTER_TAP_1_PX
 	_adb_tap(monster_tap_x, monster_tap_y, adb_serial)
-	time.sleep(6.5)
+	while True:
+		pixel_rgb = read_pixel_rgb(adb_serial or DEFAULT_ADB_SERIAL, *MONSTER_DONE_PX)
+		if tuple(pixel_rgb) == MONSTER_DONE_RGB:
+			break
 	monster_done_x, monster_done_y = UI_MONSTER_TAP_2_PX
 	_adb_tap(monster_done_x, monster_done_y, adb_serial)
 	time.sleep(0.5)
