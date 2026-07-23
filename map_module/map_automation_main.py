@@ -15,7 +15,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from map_module._bootstrap import ensure_repo_root_on_path
 from map_automation.executor import tap_pixel
 from core.capture import capture_cropped_screenshot
-from core.actions import click_travel, move_to_right_buttom, restart_game
+from core.actions import click_travel, move_to_right_buttom, restart_game, show_memory_usage
 from core.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
 from map_automation.iteration import is_verified_clear_grid, run_map_once, verify_current_grid
 from core.logging_utils import tee_console_to_log
@@ -102,10 +102,13 @@ def main() -> None:
 			print(f"patch {patch + 1}/{patch_count} started")
 			for iteration in range(iter_count):
 				print(f"iter {iteration + 1}/{iter_count} clear loop started")
+				memory_layout = show_memory_usage(ADB_SERIAL)
+				print(memory_layout["Pss Total"]["Native Heap"], memory_layout["Pss Total"]["Unknown"])
+
 				tap_pixel(ADB_SERIAL, stage_x, stage_y)
-				time.sleep(0.15)
+				time.sleep(1)
 				tap_pixel(ADB_SERIAL, 280, 862)
-				time.sleep(0.5)
+				time.sleep(1)
 
 				capture_screenshot = partial(
 					capture_cropped_screenshot,

@@ -59,7 +59,7 @@ def execute_list(
 	for point in click_list:
 		# compute distance in grid steps (Manhattan)
 		dist = abs(point[0] - current[0]) + abs(point[1] - current[1])
-		wait_seconds = dist * 0.47
+		wait_seconds = dist * 0.46
 		x, y = _grid_to_pixel(point)
 		_adb_tap(x, y, adb_serial)
 		# wait for movement to finish before next tap

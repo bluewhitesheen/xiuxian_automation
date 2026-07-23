@@ -15,8 +15,8 @@ from map_module._bootstrap import ensure_repo_root_on_path
 from map_module.capture_and_split import ADB_SERIAL, ADB_TIMEOUT_SECONDS, capture_screenshot
 
 # 修改這四個值即可改讀取位置和間隔
-PIXEL_X = 31
-PIXEL_Y = 480
+PIXEL_X = 373
+PIXEL_Y = 942
 DELAY_SECONDS = 0
 
 

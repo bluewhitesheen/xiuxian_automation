@@ -8,7 +8,15 @@
 * 需要手動新增一個 bluestack.conf，內容大致是（之後可能會將更多參數掛在 conf file，請自行研究 codebase)：
 ```
 [automation]
-iter_count = 24
+stage = 12
+patch_count = 1
+iter_count = 90
+
+[level_positions]
+9 = 80, 800
+10 = 350, 560
+11 = 90, 400
+12 = 22, 220
 ```
 
 ## Others
