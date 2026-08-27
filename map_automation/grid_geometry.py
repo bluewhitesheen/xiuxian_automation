@@ -23,4 +23,6 @@ UI_CONFIRM_CLOSE_PX: tuple[int, int] = (350, 720)
 UI_MONSTER_TAP_1_PX: tuple[int, int] = (300, 750)
 UI_MONSTER_TAP_2_PX: tuple[int, int] = (250, 1250)
 MONSTER_DONE_PX: tuple[int, int] = (300, 1200)
+MONSTER_PAGE_ENTERED_RGB: tuple[int, int, int] = (140, 219, 148)
 MONSTER_DONE_RGB: tuple[int, int, int] = (247, 142, 140)
+

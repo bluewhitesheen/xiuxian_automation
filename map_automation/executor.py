@@ -13,9 +13,10 @@ from map_automation.grid_geometry import (
 	GRID_LEFT_PX,
 	GRID_TOP_PX,
 	MONSTER_DONE_PX,
-	MONSTER_DONE_RGB,
 	UI_MONSTER_TAP_1_PX,
 	UI_MONSTER_TAP_2_PX,
+	MONSTER_PAGE_ENTERED_RGB,
+	MONSTER_DONE_RGB,
 )
 
 GridPoint = tuple[int, int]
@@ -79,8 +80,15 @@ def interact_with_monster(monster_point: GridPoint, adb_serial: str | None = Non
 	x, y = _grid_to_pixel(monster_point)
 	_adb_tap(x, y, adb_serial)
 	time.sleep(0.5)
+
+	# Click the confirmation page before entering the fight
+	while True:
+		pixel_rgb = read_pixel_rgb(adb_serial or DEFAULT_ADB_SERIAL, *UI_MONSTER_TAP_1_PX)
+		if tuple(pixel_rgb) == MONSTER_PAGE_ENTERED_RGB:
+			break
 	monster_tap_x, monster_tap_y = UI_MONSTER_TAP_1_PX
 	_adb_tap(monster_tap_x, monster_tap_y, adb_serial)
+
 	while True:
 		pixel_rgb = read_pixel_rgb(adb_serial or DEFAULT_ADB_SERIAL, *MONSTER_DONE_PX)
 		if tuple(pixel_rgb) == MONSTER_DONE_RGB:
