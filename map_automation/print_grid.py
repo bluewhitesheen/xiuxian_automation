@@ -22,7 +22,7 @@ from map_module.capture_and_split import (
 	crop_grid_region,
 	run_adb,
 )
-from map_automation.grid_classifier import GRID_COLS, GRID_ROWS, analyze_screenshot_grid
+from map_module.grid_classifier import GRID_COLS, GRID_ROWS, analyze_screenshot_grid
 
 
 DEFAULT_SERIAL: str = ADB_SERIAL

@@ -1,1 +1,0 @@
-"""BlueStacks automation package."""

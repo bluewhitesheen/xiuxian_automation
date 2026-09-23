@@ -10,16 +10,18 @@ if str(PROJECT_ROOT) not in sys.path:
 	sys.path.insert(0, str(PROJECT_ROOT))
 
 from map_module._bootstrap import ensure_repo_root_on_path
-from map_automation.iteration import print_grid, run_map_once
+from map_module.iteration import print_grid, run_map_once
 
 ensure_repo_root_on_path()
-from map_module.map_automation_main import ADB_SERIAL, GRID_X, GRID_Y, GRID_HEIGHT, GRID_WIDTH
+from map_automation.map_automation_main import ADB_SERIAL, GRID_X, GRID_Y, GRID_HEIGHT, GRID_WIDTH
 from core.capture import capture_cropped_screenshot
 from core.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS
+from functools import partial
 
 
 def main() -> None:
-	capture_screenshot = lambda: capture_cropped_screenshot(
+	capture_screenshot = partial(
+		capture_cropped_screenshot,
 		ADB_SERIAL,
 		GRID_X,
 		GRID_Y,

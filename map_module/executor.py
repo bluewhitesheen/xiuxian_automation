@@ -5,7 +5,7 @@ from typing import List
 
 from core.actions import read_pixel_rgb
 from core.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
-from map_automation.grid_geometry import (
+from map_module.grid_geometry import (
 	GRID_CELL_CENTER_OFFSET_X,
 	GRID_CELL_CENTER_OFFSET_Y,
 	GRID_CELL_PX_X,

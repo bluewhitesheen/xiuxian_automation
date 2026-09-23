@@ -9,7 +9,8 @@ from pprint import pformat
 
 from PIL import Image
 
-from map_automation.grid_geometry import GRID_ROWS, GRID_COLS
+from map_module.grid_geometry import GRID_ROWS, GRID_COLS
+from map_module.monster_detection import has_monster_border
 
 
 WORKSPACE_DIR = Path(__file__).resolve().parent.parent
@@ -102,9 +103,9 @@ def _load_category(category_name: str, marker: str) -> ReferenceCategory:
 @lru_cache(maxsize=1)
 def load_reference_categories() -> tuple[ReferenceCategory, ...]:
 	return (
-		_load_category("monster", "M"),
 		_load_category("treasure", "I"),
 		_load_category("people", "P"),
+		_load_category("monster", "M")
 	)
 
 
@@ -125,6 +126,29 @@ def _classify_tile(tile: Image.Image, categories: tuple[ReferenceCategory, ...])
 		return "."
 
 	return best_marker
+
+def _classify_tile_with_monster_border(tile: Image.Image, categories: tuple[ReferenceCategory, ...]) -> str:
+	tile_array = np.array(tile.convert("RGB"))
+	tile_bgr = cv2.cvtColor(tile_array, cv2.COLOR_RGB2BGR)
+	tile_gray = _center_crop_gray(tile)
+	similarities: list[tuple[str, float]] = []
+	
+	for category in categories:
+		resized_tile = _resize_to_target(tile_gray, category.target_size)
+		for reference_tile in category.tiles:
+			similarity = float(cv2.matchTemplate(resized_tile, reference_tile, cv2.TM_CCOEFF_NORMED)[0, 0])
+			similarities.append((category.marker, similarity))
+
+	if any(marker == "P" and similarity > SIMILARITY_THRESHOLD for marker, similarity in similarities):
+		return "P"
+
+	if has_monster_border(tile_bgr):
+		return "M"
+
+	if any(marker == "I" and similarity > SIMILARITY_THRESHOLD for marker, similarity in similarities):
+		return "I"
+
+	return "."
 
 
 def analyze_screenshot_grid(image: Image.Image, rows: int = GRID_ROWS, cols: int = GRID_COLS) -> list[list[str]]:

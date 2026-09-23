@@ -1,33 +1,31 @@
 from __future__ import annotations
 
 import datetime as _dt
-from functools import partial
 import configparser
 import time
 from pathlib import Path
 import sys
 from typing import Final
+from functools import partial
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-	sys.path.insert(0, str(PROJECT_ROOT))
+WORKSPACE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = WORKSPACE_DIR.parent
 
-from map_module._bootstrap import ensure_repo_root_on_path
-from map_automation.executor import tap_pixel
+
+def _ensure_project_root_on_path() -> None:
+	project_root = str(PROJECT_ROOT)
+	if project_root not in sys.path:
+		sys.path.insert(0, project_root)
+_ensure_project_root_on_path()
+
 from core.capture import capture_cropped_screenshot
 from core.actions import click_travel, move_to_right_buttom, restart_game, show_memory_usage
 from core.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
-from map_automation.iteration import is_verified_clear_grid, run_map_once, verify_current_grid
 from core.logging_utils import tee_console_to_log
+from map_module.executor import tap_pixel
+from map_module.iteration import is_verified_clear_grid, run_map_once, verify_current_grid
 
 
-def _bootstrap() -> tuple[Path, Path]:
-    workspace = Path(__file__).resolve().parent
-    project_root = ensure_repo_root_on_path()
-    return workspace, project_root
-
-
-WORKSPACE_DIR, PROJECT_ROOT = _bootstrap()
 CONFIG_PATH = PROJECT_ROOT / "bluestack.conf"
 LOG_DIR = PROJECT_ROOT / "logs"
 ADB_SERIAL: Final[str] = "emulator-5554"
@@ -87,7 +85,6 @@ def load_runtime_config(config_path: Path = CONFIG_PATH) -> tuple[int, int, int,
 		) from exc
 
 	return patch_count, iter_count, stage_x, stage_y
-
 
 def main() -> None:
 	validate_adb_connection()
