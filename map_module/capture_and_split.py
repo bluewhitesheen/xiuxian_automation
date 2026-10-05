@@ -16,7 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from map_module._bootstrap import ensure_repo_root_on_path
 ensure_repo_root_on_path()
 from core.adb_utils import run_adb
-from map_automation.grid_geometry import (
+from map_module.grid_geometry import (
 	GRID_COLS,
 	GRID_HEIGHT_PX,
 	GRID_LEFT_PX,

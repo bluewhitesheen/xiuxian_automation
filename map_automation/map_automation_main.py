@@ -23,7 +23,7 @@ from core.actions import click_travel, move_to_right_buttom, restart_game, show_
 from core.adb_utils import ADB_COMMAND_TIMEOUT_SECONDS, run_adb
 from core.logging_utils import tee_console_to_log
 from map_module.executor import tap_pixel
-from map_module.iteration import is_verified_clear_grid, run_map_once, verify_current_grid
+from map_module.iteration import is_verified_clear_grid, run_map_once, capture_grid
 
 
 CONFIG_PATH = PROJECT_ROOT / "bluestack.conf"
@@ -120,7 +120,8 @@ def main() -> None:
 				while True:
 					_, _ = run_map_once(capture_screenshot, ADB_SERIAL)
 
-					verify_grid = verify_current_grid(capture_screenshot)
+					time.sleep(0.7)
+					verify_grid = capture_grid(capture_screenshot)
 					if is_verified_clear_grid(verify_grid):
 						tap_pixel(ADB_SERIAL, 30, 30)
 						time.sleep(0.25)

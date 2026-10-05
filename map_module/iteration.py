@@ -28,6 +28,10 @@ def grid_point_to_pixel(row: int, col: int) -> tuple[int, int]:
 		GRID_TOP_PX + row * GRID_CELL_PX_Y + GRID_CELL_CENTER_OFFSET_Y,
 	)
 
+def capture_grid(capture_screenshot: ScreenshotFunc) -> Grid:
+	image = capture_screenshot()
+	return analyze_screenshot_grid(image)
+
 
 def find_player(grid: Grid) -> GridPoint:
 	for row_index, row in enumerate(grid):
@@ -36,28 +40,23 @@ def find_player(grid: Grid) -> GridPoint:
 				return row_index, col_index
 	raise RuntimeError("P not found")
 
-
 def is_verified_clear_grid(grid: Grid) -> bool:
 	player_count = sum(1 for row in grid for cell in row if cell == "P")
 	has_event = any(cell in ("M", "I") for row in grid for cell in row)
 	return player_count == 1 and not has_event
 
+def is_valid_grid(grid: Grid) -> bool:
+	has_event = any(cell in ("M", "I", "P") for row in grid for cell in row)
+	return has_event
 
 def print_grid(grid: Grid) -> None:
 	for row in grid:
 		print("".join(row))
 
-
-def capture_grid(capture_screenshot: ScreenshotFunc) -> Grid:
-	image = capture_screenshot()
-	return analyze_screenshot_grid(image)
-
-
 def tap_initial_player_position(adb_serial: str | None = None) -> None:
 	start_x, start_y = grid_point_to_pixel(12, 3)
 	tap_pixel(adb_serial, start_x, start_y)
 	time.sleep(0.7)
-
 
 def run_map_once(
 	capture_screenshot: ScreenshotFunc,
@@ -70,7 +69,7 @@ def run_map_once(
 	if tap_start:
 		tap_initial_player_position(adb_serial)
 
-	if grid is None:
+	while grid is None:
 		grid = capture_grid(capture_screenshot)
 
 	if current_pos is None:
@@ -81,6 +80,9 @@ def run_map_once(
 			raise
 
 	while True:
+		while not is_valid_grid(grid): 
+			grid = capture_grid(capture_screenshot)
+
 		try:
 			target, click_list = get_next_route(grid)
 		except ValueError as exc:
@@ -108,9 +110,3 @@ def run_map_once(
 		current_pos = entry
 
 	return grid, current_pos
-
-
-def verify_current_grid(capture_screenshot: ScreenshotFunc) -> Grid:
-	time.sleep(0.7)
-	verify_grid = capture_grid(capture_screenshot)
-	return verify_grid
