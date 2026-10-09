@@ -38,7 +38,7 @@ def find_player(grid: Grid) -> GridPoint:
 		for col_index, cell in enumerate(row):
 			if cell == "P":
 				return row_index, col_index
-	raise RuntimeError("P not found")
+	return None
 
 def is_verified_clear_grid(grid: Grid) -> bool:
 	player_count = sum(1 for row in grid for cell in row if cell == "P")
@@ -63,16 +63,15 @@ def run_map_once(
 	adb_serial: str | None = None,
 	grid: Grid | None = None,
 	current_pos: GridPoint | None = None,
-	tap_start: bool = True,
 ) -> tuple[Grid, GridPoint]:
 	"""Run route planning until no next route is available for the current captured grid."""
-	if tap_start:
-		tap_initial_player_position(adb_serial)
-
 	while grid is None:
 		grid = capture_grid(capture_screenshot)
 
+	current_pos = find_player(grid)
 	if current_pos is None:
+		tap_initial_player_position(adb_serial)
+		grid = capture_grid(capture_screenshot)
 		try:
 			current_pos = find_player(grid)
 		except RuntimeError:
@@ -82,7 +81,6 @@ def run_map_once(
 	while True:
 		while not is_valid_grid(grid): 
 			grid = capture_grid(capture_screenshot)
-
 		try:
 			target, click_list = get_next_route(grid)
 		except ValueError as exc:
