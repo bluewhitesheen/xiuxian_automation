@@ -5,7 +5,7 @@
 * Screen resolution of phone: 1280x540
 * Python 3.12
 * 需要將地圖中選擇關卡的石頭的上半部放在 (1450, 2365)
-* 需要手動新增一個 bluestack.conf，內容大致是（之後可能會將更多參數掛在 conf file，請自行研究 codebase)：
+* 需要手動新增一個 bluestack.conf，內容為：
 ```
 [automation]
 stage = 12
