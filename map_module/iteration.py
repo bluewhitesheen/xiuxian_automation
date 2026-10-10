@@ -49,10 +49,6 @@ def is_valid_grid(grid: Grid) -> bool:
 	has_event = any(cell in ("M", "I", "P") for row in grid for cell in row)
 	return has_event
 
-def print_grid(grid: Grid) -> None:
-	for row in grid:
-		print("".join(row))
-
 def tap_initial_player_position(adb_serial: str | None = None) -> None:
 	start_x, start_y = grid_point_to_pixel(12, 3)
 	tap_pixel(adb_serial, start_x, start_y)
@@ -81,8 +77,9 @@ def run_map_once(
 	while True:
 		while not is_valid_grid(grid): 
 			grid = capture_grid(capture_screenshot)
+			current_pos = find_player(grid)
 		try:
-			target, click_list = get_next_route(grid)
+			target, click_list = get_next_route(grid, current_pos)
 		except ValueError as exc:
 			print(f"no next route: {exc}")
 			break

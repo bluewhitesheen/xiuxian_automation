@@ -9,8 +9,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
 	sys.path.insert(0, str(PROJECT_ROOT))
 
+from map_module.print_grid import print_grid
 from map_module._bootstrap import ensure_repo_root_on_path
-from map_module.iteration import print_grid, run_map_once
+from map_module.iteration import run_map_once
 
 ensure_repo_root_on_path()
 from map_automation.map_automation_main import ADB_SERIAL, GRID_X, GRID_Y, GRID_HEIGHT, GRID_WIDTH

@@ -118,7 +118,7 @@ def main() -> None:
 				)
 
 				while True:
-					_, _ = run_map_once(capture_screenshot, ADB_SERIAL)
+					run_map_once(capture_screenshot, ADB_SERIAL)
 
 					time.sleep(0.7)
 					verify_grid = capture_grid(capture_screenshot)
@@ -128,8 +128,6 @@ def main() -> None:
 						tap_pixel(ADB_SERIAL, 350, 720)
 						time.sleep(0.25)
 						break
-
-					_ = verify_grid
 
 			restart_game(ADB_SERIAL)
 			click_travel(ADB_SERIAL)

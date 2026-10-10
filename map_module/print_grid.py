@@ -53,7 +53,8 @@ def capture_grid(serial: str, timeout_seconds: int, grid_x: int, grid_y: int, gr
 
 def print_grid(grid: list[list[str]]) -> None:
 	for row in grid:
-		print(" ".join(row))
+		print("".join(row))
+	print()
 
 
 def main() -> None:
